@@ -1,11 +1,16 @@
 # RogPhone2Flasher
 
 I made this script to easily update custom roms on the Asus Rog Phone 2.
+
 Normally to update a custom rom fully you need to flash the stock rom twice and then flash the custom rom.
-With this script you technically only flash once since it flashed all of the images to both slots in one go, therefore updating is faster since we dont need to flash the same image twice. For example the system image of stock rom will be overwritten by the system image of custom rom so there is no point in wasting time flashing stock system image.
+
+With this script you technically only flash once since it flashed all of the images to both slots in one go, therefore updating is faster since we dont need to flash the same image twice. 
+
+For example the system image of stock rom will be overwritten by the system image of custom rom so there is no point in wasting time flashing stock system image.
 
 
-To use this script please watch my video guide
+## To use this script please watch my video guide
+
 [![guide](https://img.youtube.com/vi/-M_MJUzCuvM/0.jpg)](https://www.youtube.com/watch?v=-M_MJUzCuvM)
 
 
@@ -41,9 +46,9 @@ When running the script (`./RogPhone2Flasher.sh`) you will be presented with a m
         #######                         #######  
      #############                   #############
 
-1) reboot to OS					   4) switch slots				     7) flash_everything_including_magisk_and_kernel  10) Quit / Ctrl+C
-2) reboot to fastboot				   5) flash magisk				     8) flash_everything_and_magisk
-3) reboot to twrp				   6) flash kernel				     9) flash_all_roms
+1) reboot to OS	       4) switch slots	  7) flash_everything_including_magisk_and_kernel  10) Quit / Ctrl+C
+2) reboot to fastboot	 5) flash magisk	  8) flash_everything_and_magisk
+3) reboot to twrp		 6) flash kernel	  9) flash_all_roms
 ```
 
 ## bugs and feature requests
