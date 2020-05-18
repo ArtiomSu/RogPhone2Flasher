@@ -1,0 +1,3 @@
+# run this in admin powershell to install the windows store
+
+ppXPackage *WindowsStore* -AllUsers | Foreach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"} 
