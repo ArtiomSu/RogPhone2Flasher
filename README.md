@@ -13,6 +13,8 @@ For example the system image of stock rom will be overwritten by the system imag
 
 [![guide](https://img.youtube.com/vi/-M_MJUzCuvM/0.jpg)](https://www.youtube.com/watch?v=-M_MJUzCuvM)
 
+## To use this script on windows 10 you can take a look at
+[![guide](https://img.youtube.com/vi/pvhuMtJstaU/0.jpg)](https://www.youtube.com/watch?v=pvhuMtJstaU)
 
 ## Setup
 You will need to use [Payload Dumper](https://github.com/vm03/payload_dumper) to extract the images
