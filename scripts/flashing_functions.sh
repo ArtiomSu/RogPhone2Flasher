@@ -156,6 +156,16 @@ menu_flash_kernel(){
 	flash_kernel
 }
 
+menu_flash_twrp_for_android_9(){
+	boot_into_twrp_using_P_img
+	flash_twrp && adb reboot recovery && wait_for_twrp && echo "Inside twrp" && return 0
+}
+
+menu_flash_twrp_for_android_10(){
+	boot_into_twrp_using_Q_img
+	flash_twrp && adb reboot recovery && wait_for_twrp && echo "Inside twrp" && return 0
+}
+
 #################################
 ### end of flashing functions ###
 #################################

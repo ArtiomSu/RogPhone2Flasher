@@ -82,7 +82,11 @@ check_if_folders_and_files_are_ok(){
 	fi
 
 	if [ ! -f "${scripts_folder}/$twrpQ_boot" ]; then
-	    confirm "twrp boot img not found this might cause serious issues down the line are you sure you want to continue? [y,n]" || exit 0
+	    confirm "twrp android 10 boot img not found this might cause serious issues down the line are you sure you want to continue? [y,n]" || exit 0
+	fi
+
+	if [ ! -f "${scripts_folder}/$twrpP_boot" ]; then
+	    confirm "twrp android 9 boot img not found this might cause serious issues down the line are you sure you want to continue? [y,n]" || exit 0
 	fi
 
 	if [ ! -f "${scripts_folder}/$twrp_installer" ]; then
@@ -104,6 +108,16 @@ wait_for_fastboot(){
 		echo "waiting for phone to come online"
 		sleep 5
 		up=$(fastboot devices | grep fast)
+	done
+}
+
+wait_for_twrp(){
+	adb get-state > /dev/null 2>&1
+	while [ $? -ne 0 ]
+	do
+		echo "waiting for twrp to come online ( you might have to type in your code )"
+		sleep 5
+		adb get-state > /dev/null 2>&1
 	done
 }
 
@@ -184,6 +198,24 @@ check_if_folders_and_files_are_ok(){
 	if [ ! -f "${scripts_folder}/$twrp_installer" ]; then
 	    confirm "twrp installer not found this might cause serious issues down the line are you sure you want to continue? [y,n]" || exit 0
 	fi
+}
+
+swap_slot(){
+	update_current_slot
+	if [ "$current_slot" == "a" ]
+	then
+		echo "slot is a will reboot to b"
+		fastboot --set-active=b
+	elif [ "$current_slot" == "b" ]
+	then
+			echo "slot is b will reboot to a"
+			fastboot --set-active=a
+	else
+			echo "slot not found exiting"
+			exit 2
+	fi
+	fastboot reboot bootloader
+	wait_for_fastboot
 }
 
 ###############################
