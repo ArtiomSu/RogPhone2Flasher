@@ -9,6 +9,8 @@
 #adb reboot recovery
 
 
+
+
 # interesting atricle https://www.xda-developers.com/how-a-b-partitions-and-seamless-updates-affect-custom-development-on-xda/
 
 ##############
@@ -26,6 +28,36 @@ scripts_folder="/media/2tbssd/asus-rog-phone-2/downloads/exp1/scripts"
 asus_images_folder="/media/2tbssd/asus-rog-phone-2/downloads/exp1/payload_dumper/output"
 # this is where all of your stock rom images need to be
 havoc_images_folder="/media/2tbssd/asus-rog-phone-2/downloads/exp1/havoc/payload_dumper/output"
+
+# only set these if you are using windows
+# aparently you can run exes through the linux subsystem so we will do that
+# your adb file in windows
+windows_adb="/mnt/d/asus-rog-phone-2/platform-tools_r29.0.5-windows/adb.exe"
+# your fastboot file in windows
+windows_fastboot="/mnt/d/asus-rog-phone-2/platform-tools_r29.0.5-windows/fastboot.exe"
+
+# check if we are using windows with the linux subsystem
+windowscheck="$(uname -r | grep Microsoft)"
+if [ ! -z $windowscheck ]
+then
+	# change the following 3 folders to suit your windows environment
+	scripts_folder="/mnt/d/asus-rog-phone-2/downloads/exp1/scripts"
+	asus_images_folder="/mnt/d/asus-rog-phone-2/downloads/exp1/payload_dumper/output"
+	havoc_images_folder="/mnt/d/asus-rog-phone-2/downloads/exp1/havoc/payload_dumper/output"
+	echo "windows detected chaging some stuff"
+	if [ ! -f "$windows_adb" ]; then
+		echo "adb not found cannot continue"
+		exit 1
+	fi
+	if [ ! -f "$windows_fastboot" ]; then
+		echo "fastboot not found cannot continue"
+		exit 1
+	fi
+	shopt -s expand_aliases
+	alias adb="$windows_adb"
+	alias fastboot="$windows_fastboot"
+fi
+
 
 #####################
 ### end of config ###
@@ -335,16 +367,19 @@ swap_slot(){
 	wait_for_fastboot
 }
 
-menu (){
+flash_menu(){
+	echo ""
 	echo "     #############################################"
 	echo "      ###########################################"
 	echo "      #                                         #"
-	echo "      #        Asus Rog Phone 2 Flasher V0.1    #"
+	echo "      #        Asus Rog Phone 2 Flasher V0.2    #"
 	echo "      #        By                               #"
 	echo "      #        Terminal_Heat_Sink               #"
 	echo "      #                                         #"
 	echo "      #        Video guide:                     #"
 	echo "      #        https://youtu.be/-M_MJUzCuvM     #"
+	echo "      #                                         #"
+	echo "      #        Flashing Menu                    #"
 	echo "      #                                         #"
 	echo "      ###########################################"
 	echo "      ###########                     ###########"
@@ -352,8 +387,60 @@ menu (){
 	echo "        #######                         #######  "
 	echo "     #############                   #############"
 	echo ""
-	PS3="$(header) Enter your choice: "
-	options=( "reboot to OS" "reboot to fastboot" "reboot to twrp" "switch slots" "flash magisk" "flash kernel" "flash_everything_including_magisk_and_kernel" "flash_everything_and_magisk" "flash_all_roms" "Quit / Ctrl+C")
+	PS3="$(header) Flashing Menu: "
+	options=( "flash magisk" "flash kernel" "flash_everything_including_magisk_and_kernel" "flash_everything_and_magisk" "flash_all_roms" "go back")
+	select opt in "${options[@]}"
+	do
+	    case $opt in
+	    	"flash magisk")
+				confirm "Do you want to install magisk? [y/N]" && menu_flash_magisk
+				;;
+			"flash kernel")
+				confirm "Do you want to flash a custom kernel? [y/N]" && menu_flash_kernel
+				;;	
+	        "flash_everything_including_magisk_and_kernel")
+	            confirm "will flash stock and custom rom aswell as flashing magisk and custom kernel after Are you sure? [y/N]" && flash_everything_including_magisk_and_kernel	       
+	            ;;
+	        "flash_everything_and_magisk")
+	            confirm "will flash stock and custom rom aswell as flashing magisk after Are you sure? [y/N]" && flash_everything_and_magisk
+	            ;;
+	        "flash_all_roms")
+	            confirm "will flash stock and custom rom Are you sure? [y/N]" && flash_all_roms
+	            ;;
+	        "go back")
+	            break
+	            ;;
+	        *) 
+				echo "invalid option $REPLY"
+				;;
+	    esac
+	    echo ""
+	    PS3="$(header) Flashing Menu: "
+	done
+}
+
+menu (){
+	echo ""
+	echo "     #############################################"
+	echo "      ###########################################"
+	echo "      #                                         #"
+	echo "      #        Asus Rog Phone 2 Flasher V0.2    #"
+	echo "      #        By                               #"
+	echo "      #        Terminal_Heat_Sink               #"
+	echo "      #                                         #"
+	echo "      #        Video guide:                     #"
+	echo "      #        https://youtu.be/-M_MJUzCuvM     #"
+	echo "      #                                         #"
+	echo "      #        Main Menu                        #"
+	echo "      #                                         #"
+	echo "      ###########################################"
+	echo "      ###########                     ###########"
+	echo "       #########                       ######### "
+	echo "        #######                         #######  "
+	echo "     #############                   #############"
+	echo ""
+	PS3="$(header) Main Menu: "
+	options=( "reboot to OS" "reboot to fastboot" "reboot to twrp" "switch slots" "flashing Menu" "Quit / Ctrl+C")
 	select opt in "${options[@]}"
 	do
 	    case $opt in
@@ -370,21 +457,9 @@ menu (){
 	    		echo "current slot is $current_slot"
 	    		confirm "Do you want to switch to the other slot? [y/N]" && swap_slot	
 	    		;;
-	    	"flash magisk")
-				confirm "Do you want to install magisk? [y/N]" && menu_flash_magisk
+	    	"flashing Menu")
+				flash_menu
 				;;
-			"flash kernel")
-				confirm "Do you want to flash a custom kernel? [y/N]" && menu_flash_kernel
-				;;	
-	        "flash_everything_including_magisk_and_kernel")
-	            confirm "will flash stock and custom rom aswell as flashing magisk and custom kernel after Are you sure? [y/N]" && flash_everything_including_magisk_and_kernel	       
-	            ;;
-	        "flash_everything_and_magisk")
-	            confirm "will flash stock and custom rom aswell as flashing magisk after Are you sure? [y/N]" && flash_everything_and_magisk
-	            ;;
-	        "flash_all_roms")
-	            confirm "will flash stock and custom rom Are you sure? [y/N]" && flash_all_roms
-	            ;;
 	        "Quit / Ctrl+C")
 	            break
 	            ;;
@@ -393,7 +468,7 @@ menu (){
 				;;
 	    esac
 	    echo ""
-	    PS3="$(header) Enter your choice: "
+	    PS3="$(header) Main Menu: "
 	done
 }
 
