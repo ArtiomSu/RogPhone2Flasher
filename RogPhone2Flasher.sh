@@ -18,6 +18,8 @@
 #config values change these before running script
 magisk_name="Magisk-v20.4.zip"
 kernel_name="Kirisakura_Yoda_Q_2.6.2.zip"
+twrpQ_boot="twrp-3.3.1-14-I001D-Q-mauronofrio.img"
+twrp_installer="twrp-3.3.1-14-I001D-installer-mauronofrio.zip"
 # magisk and kernel should be in the scripts folder also if you are flashing twrp put it in here
 scripts_folder="/media/2tbssd/asus-rog-phone-2/downloads/exp1/scripts"
 # this is where all of your stock rom images need to be
@@ -34,10 +36,18 @@ havoc_images_folder="/media/2tbssd/asus-rog-phone-2/downloads/exp1/havoc/payload
 ########################################
 ### operational values - do not edit ###
 ########################################
+SCRIPT="$(realpath $0)"
+SCRIPTPATH="$(dirname $SCRIPT)"
 current_slot=""
 ###############################################
 ### end of operational values - do not edit ###
 ###############################################
+clone_error="please git clone https://github.com/ArtiomSu/RogPhone2Flasher.git"
+[ ! -f $SCRIPTPATH/scripts/rebooting_functionsd.sh ] && echo $clone_error && exit 1
+
+source $SCRIPTPATH/scripts/rebooting_functions.sh
+
+
 
 
 ########################
@@ -122,6 +132,14 @@ check_if_folders_and_files_are_ok(){
 	if [ ! -f "${scripts_folder}/$kernel_name" ]; then
 	    confirm "custom kernel file is not found this might cause serious issues down the line are you sure you want to continue? [y,n]" || exit 0
 	fi
+
+	if [ ! -f "${scripts_folder}/$twrpQ_boot" ]; then
+	    confirm "twrp boot img not found this might cause serious issues down the line are you sure you want to continue? [y,n]" || exit 0
+	fi
+
+	if [ ! -f "${scripts_folder}/$twrp_installer" ]; then
+	    confirm "twrp installer not found this might cause serious issues down the line are you sure you want to continue? [y,n]" || exit 0
+	fi
 }
 
 ###############################
@@ -129,45 +147,7 @@ check_if_folders_and_files_are_ok(){
 ###############################
 
 
-###########################
-### rebooting functions ###
-###########################
 
-reboot_to_recovery(){
-	echo "rebooting to recovery"
-	fastboot reboot recovery 	# this for some reason reboots the phone and not to recovery?
-	# so we must wait for adb rofl
-	echo "waiting for adb device"
-	adb wait-for-device
-	echo "rebooting to recovery"
-	adb reboot recovery
-}
-
-wait_for_twrp(){
-	adb get-state > /dev/null 2>&1
-	while [ $? -ne 0 ]
-	do
-		echo "waiting for twrp to come online ( you might have to type in your code )"
-		sleep 5
-		adb get-state > /dev/null 2>&1
-	done
-}
-
-reboot_to_twrp(){
-	check_if_in_fastboot && reboot_to_recovery && wait_for_twrp && echo "Inside twrp" && return 0 || echo "waiting for adb device" && adb wait-for-device && echo "rebooting to recovery" && adb reboot recovery && wait_for_twrp && echo "Inside twrp" && return 0
-}
-
-reboot_phone(){
-	check_if_in_fastboot && fastboot reboot && return 0 || adb reboot && return 0
-}
-
-reboot_fastboot(){
-	check_if_in_fastboot && echo "rebooting to fastboot" && fastboot reboot bootloader && wait_for_fastboot && echo "rebooted to fasboot" && return 0 || echo "rebooting to fastboot" && adb reboot bootloader && wait_for_fastboot && echo "rebooted to fasboot" && return 0
-}
-
-##################################
-### end of rebooting functions ###
-##################################
 
 
 ##########################h
@@ -278,6 +258,16 @@ flash_kernel(){
 	adb shell twrp install /tmp/${kernel_name}
 	echo "kernel flashed"
 	adb shell rm /tmp/${kernel_name}
+}
+
+flash_twrp(){
+	echo "uploading twrp installer"
+	cd "$scripts_folder"
+	adb push ./${twrp_installer} /tmp
+	echo "flashing twrp"
+	adb shell twrp install /tmp/${twrp_installer}
+	echo "twrp flashed"
+	adb shell rm /tmp/${twrp_installer}
 }
 
 flash_everything_including_magisk_and_kernel(){
