@@ -74,7 +74,7 @@ When running the script (`./RogPhone2Flasher.sh`) you will be presented with a m
      #############################################
       ###########################################
       #                                         #
-      #        Asus Rog Phone 2 Flasher V0.2    #
+      #        Asus Rog Phone 2 Flasher V0.9    #
       #        By                               #
       #        Terminal_Heat_Sink               #
       #                                         #
@@ -85,12 +85,15 @@ When running the script (`./RogPhone2Flasher.sh`) you will be presented with a m
       #                                         #
       ###########################################
       ###########                     ###########
-       #########                       #########
-        #######                         #######
+       #########                       ######### 
+        #######                         #######  
      #############                   #############
 
-1) reboot to OS        3) reboot to twrp      5) flashing Menu
-2) reboot to fastboot  4) switch slots        6) Quit / Ctrl+C
+1) reboot to OS	       5) flashing Menu
+2) reboot to fastboot      6) Backup Menu
+3) reboot to twrp          7) Multi rom
+4) switch slots	       8) Quit / Ctrl+C
+[Asus Rog Phone 2 Flasher (adb mode)] Main Menu: 
 ```
 
 ## Multi rom / dual booting
