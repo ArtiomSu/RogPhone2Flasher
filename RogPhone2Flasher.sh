@@ -1,18 +1,4 @@
 #!/usr/bin/env bash
-
-
-#unlocked=$(sudo fastboot getvar unlocked)
-#read unlocked < <(sudo fastboot getvar unlocked)
-#echo "unlocked is $unlocked"
-
-#fastboot reboot bootloader
-#adb reboot recovery
-
-
-
-
-# interesting atricle https://www.xda-developers.com/how-a-b-partitions-and-seamless-updates-affect-custom-development-on-xda/
-
 ##############
 ### config ###
 ##############
@@ -29,8 +15,8 @@ scripts_folder="/media/2tbssd/asus-rog-phone-2/downloads/exp1/scripts"
 asus_images_folder="/media/2tbssd/asus-rog-phone-2/downloads/exp1/payload_dumper/output"
 # this is where all of your stock rom images need to be
 havoc_images_folder="/media/2tbssd/asus-rog-phone-2/downloads/exp1/havoc/payload_dumper/output"
-
-
+# this allows you to skip the [y,n] confirmations by setting it to false
+always_confirm_user_action=true
 
 # check if we are using windows with the linux subsystem
 windowscheck="$(uname -r | grep Microsoft)"
@@ -58,11 +44,25 @@ then
 	alias adb="$windows_adb"
 	alias fastboot="$windows_fastboot"
 fi
+#####################
+### end of config ###
+#####################
 
 
+########################################
+### operational values - do not edit ###
+########################################
+current_slot=""
 SCRIPT="$(realpath $0)"
 SCRIPTPATH="$(dirname $SCRIPT)"
+###############################################
+### end of operational values - do not edit ###
+###############################################
 
+
+############
+### main ###
+############
 # check if all of the scripts are there
 clone_error="please git clone https://github.com/ArtiomSu/RogPhone2Flasher.git"
 
@@ -84,33 +84,11 @@ source $SCRIPTPATH/scripts/backup_functions.sh
 [ ! -f $SCRIPTPATH/scripts/multi_rom.sh ] && echo $clone_error && exit 1
 source $SCRIPTPATH/scripts/multi_rom.sh
 
-#####################
-### end of config ###
-#####################
-
-
-
-########################################
-### operational values - do not edit ###
-########################################
-current_slot=""
-###############################################
-### end of operational values - do not edit ###
-###############################################
-
-
-
-
-############
-### main ###
-############
+[ ! -f $SCRIPTPATH/scripts/colours.sh ] && echo $clone_error && exit 1
+source $SCRIPTPATH/scripts/colours.sh
 #now lets check to see if these folders and files exist
 check_if_folders_and_files_are_ok
 #run main menu
-	# flash_all_stock_specific_images_fully a
-	# flash_all_stock_specific_images b
-	# flash_all_havoc_specific_images b
-
 menu 
 ###################
 ### end of main ###

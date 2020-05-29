@@ -38,19 +38,28 @@ stock_a10_and_havoc_reboot_to_stock(){
 	echo "backing up havoc data this will take a while"
 	backup_data_havoc
 	echo "havoc data is backed up"
-	#reboot_fastboot
-	#change_slot a
-	echo "will restore stock data"
-	#reboot_to_twrp
-	restore_data_stock || echo "stock data not found this is ok you will just need to wipe data from the menu" 
-	echo "will reboot to stock slot"
+
+	confirm "data will now be erased, if you want you can copy the backup to pc and then type y or you can just type y now to continue" || return 0
+	adb shell twrp wipe data
+	echo "data is now deleted we are ready to switch roms"
+
 	reboot_fastboot
 	change_slot a
-	echo "all done"
+	reboot_phone
+	echo -e "${colour_Green}phone rebooted you will have to reboot to fastboot manually as I dont have adb access at this time${colour_NC}"
+
+	wait_for_fastboot
+	echo "ok going to flash twrp"
+	menu_flash_twrp_for_android_10
+
+	echo "will restore stock data"
+	restore_data_stock || echo "stock data not found this is ok you will just need to wipe data from the menu" 
+	echo "will reboot to stock slot"
+	echo "all done you can reboot to os or flash magisk"
 
 }
 
-# reboots phone to stock from havoc
+# reboots phone to havoc from stock
 stock_a10_and_havoc_reboot_to_havoc(){
 	confirm "This will switch to havoc rom are you sure? [y,n]" || return 0
 	reboot_fastboot
@@ -60,12 +69,25 @@ stock_a10_and_havoc_reboot_to_havoc(){
 	echo "backing up stock data this will take a while"
 	backup_data_stock
 	echo "stock data is backed up"
+
+	confirm "data will now be erased, if you want you can copy the backup to pc and then type y or you can just type y now to continue" || return 0
+	adb shell twrp wipe data
+	echo "data is now deleted we are ready to switch roms"
+
+	reboot_fastboot
+	change_slot b
+	reboot_phone
+	echo -e "${colour_Green}phone rebooted you will have to reboot to fastboot manually as I dont have adb access at this time${colour_NC}"
+
+	wait_for_fastboot
+	echo "ok going to flash twrp"
+	boot_into_twrp_using_Q_img
+	adb reboot recovery && wait_for_twrp
+
 	echo "will restore havoc data"
 	restore_data_havoc || echo "havoc data not found this is ok you will just need to wipe data from the menu" 
 	echo "will reboot to havoc slot"
-	reboot_fastboot
-	change_slot b
-	echo "all done"
+	echo "all done you can reboot to os or flash magisk"
 }
 
 
