@@ -78,6 +78,12 @@ source $SCRIPTPATH/scripts/flashing_functions.sh
 [ ! -f $SCRIPTPATH/scripts/menus.sh ] && echo $clone_error && exit 1
 source $SCRIPTPATH/scripts/menus.sh
 
+[ ! -f $SCRIPTPATH/scripts/backup_functions.sh ] && echo $clone_error && exit 1
+source $SCRIPTPATH/scripts/backup_functions.sh
+
+[ ! -f $SCRIPTPATH/scripts/multi_rom.sh ] && echo $clone_error && exit 1
+source $SCRIPTPATH/scripts/multi_rom.sh
+
 #####################
 ### end of config ###
 #####################
@@ -101,11 +107,13 @@ current_slot=""
 #now lets check to see if these folders and files exist
 check_if_folders_and_files_are_ok
 #run main menu
+	# flash_all_stock_specific_images_fully a
+	# flash_all_stock_specific_images b
+	# flash_all_havoc_specific_images b
 
 menu 
 ###################
 ### end of main ###
 ###################
-
 
 

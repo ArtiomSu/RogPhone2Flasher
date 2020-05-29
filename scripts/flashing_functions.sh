@@ -2,90 +2,123 @@
 ### flashing functions ###
 ##########################
 
-flash_all_stock_specific_images(){
-	echo "flashing Asus images"
+flash_all_stock_specific_images_fully(){
+	echo "flashing stock images to slot $1"
 	cd "$asus_images_folder"
-	fastboot flash abl_a abl.img
-	fastboot flash abl_b abl.img
+	fastboot flash abl_${1} abl.img
 
-	fastboot flash aop_a aop.img
-	fastboot flash aop_b aop.img
+	fastboot flash aop_${1} aop.img
 
-	fastboot flash asusfw_a	asusfw.img
-	fastboot flash asusfw_b	asusfw.img
+	fastboot flash asusfw_${1}	asusfw.img
 
-	fastboot flash bluetooth_a bluetooth.img
-	fastboot flash bluetooth_b bluetooth.img
+	fastboot flash bluetooth_${1} bluetooth.img
+
+	fastboot flash boot_${1} boot.img
+
+	fastboot flash cmnlib64_${1} cmnlib64.img
+
+	fastboot flash cmnlib_${1}	cmnlib.img
+
+	fastboot flash devcfg_${1}	devcfg.img
+
+	fastboot flash dsp_${1} dsp.img
+
+	fastboot flash dtbo_${1} dtbo.img
+
+	fastboot flash hyp_${1} hyp.img
+
+	fastboot flash keymaster_${1} keymaster.img
+
+	fastboot flash modem_${1} modem.img
+
+	fastboot flash qupfw_${1} qupfw.img
+
+	fastboot flash system_${1} system.img
+
+	fastboot flash tz_${1}	tz.img
+
+	fastboot flash uefisecapp_${1} uefisecapp.img
+
+	fastboot flash vbmeta_${1} vbmeta.img
+
+	fastboot flash vendor_${1} vendor.img
+
+	fastboot flash xbl_config_${1} xbl_config.img
+
+	fastboot flash xbl_${1} xbl.img
+
+	fastboot flash xrom_${1} xrom.img
+}
+
+flash_special_vbmeta(){
+	echo "flashing special vbmeta for multi roms"
+	cd "$asus_images_folder"
+	fastboot --disable-verity --disable-verification flash vbmeta_a  vbmeta.img
+	fastboot --disable-verity --disable-verification flash vbmeta_b  vbmeta.img
+}
+
+flash_all_stock_specific_images(){
+	echo "flashing stock images to slot $1"
+	cd "$asus_images_folder"
+	fastboot flash abl_${1} abl.img
+
+	fastboot flash aop_${1} aop.img
+
+	fastboot flash asusfw_${1}	asusfw.img
+
+	fastboot flash bluetooth_${1} bluetooth.img
 
 	#fastboot flash boot_a boot.img
 	#fastboot flash boot_b boot.img
 
-	fastboot flash cmnlib64_a cmnlib64.img
-	fastboot flash cmnlib64_b cmnlib64.img
+	fastboot flash cmnlib64_${1} cmnlib64.img
 
-	fastboot flash cmnlib_a	cmnlib.img
-	fastboot flash cmnlib_b	cmnlib.img
+	fastboot flash cmnlib_${1}	cmnlib.img
 
-	fastboot flash devcfg_a	devcfg.img
-	fastboot flash devcfg_b	devcfg.img
+	fastboot flash devcfg_${1}	devcfg.img
 
-	fastboot flash dsp_a dsp.img
-	fastboot flash dsp_b dsp.img
+	fastboot flash dsp_${1} dsp.img
 
 	#fastboot flash dtbo_a dtbo.img
 	#fastboot flash dtbo_b dtbo.img
 
-	fastboot flash hyp_a hyp.img
-	fastboot flash hyp_b hyp.img
+	fastboot flash hyp_${1} hyp.img
 
-	fastboot flash keymaster_a keymaster.img
-	fastboot flash keymaster_b keymaster.img
+	fastboot flash keymaster_${1} keymaster.img
 
-	fastboot flash modem_a modem.img
-	fastboot flash modem_b modem.img
+	fastboot flash modem_${1} modem.img
 
-	fastboot flash qupfw_a qupfw.img
-	fastboot flash qupfw_b qupfw.img
+	fastboot flash qupfw_${1} qupfw.img
 
 	#fastboot flash system_a system.img
 	#fastboot flash system_b system.img
 
-	fastboot flash tz_a	tz.img
-	fastboot flash tz_b	tz.img
+	fastboot flash tz_${1}	tz.img
 
-	fastboot flash uefisecapp_a uefisecapp.img
-	fastboot flash uefisecapp_b uefisecapp.img
+	fastboot flash uefisecapp_${1} uefisecapp.img
 
 	#fastboot flash vbmeta_a vbmeta.img
 	#fastboot flash vbmeta_b	vbmeta.img
 
-	fastboot flash vendor_a	vendor.img
-	fastboot flash vendor_b	vendor.img
+	fastboot flash vendor_${1}	vendor.img
 
-	fastboot flash xbl_config_a xbl_config.img
-	fastboot flash xbl_config_b xbl_config.img
+	fastboot flash xbl_config_${1} xbl_config.img
 
-	fastboot flash xbl_a xbl.img
-	fastboot flash xbl_b xbl.img
+	fastboot flash xbl_${1} xbl.img
 
-	fastboot flash xrom_a xrom.img
-	fastboot flash xrom_b xrom.img
+	fastboot flash xrom_${1} xrom.img
 }
 
 flash_all_havoc_specific_images(){
-	echo "flashing Havoc images"
+	echo "flashing Havoc images to slot $1"
 	cd "$havoc_images_folder"
-	fastboot flash boot_a boot.img
-	fastboot flash boot_b boot.img
+	fastboot flash boot_${1} boot.img
 
-	fastboot flash dtbo_a dtbo.img
-	fastboot flash dtbo_b dtbo.img
+	fastboot flash dtbo_${1} dtbo.img
+	
+	fastboot flash system_${1} system.img
 
-	fastboot flash system_a system.img
-	fastboot flash system_b system.img
-
-	fastboot flash vbmeta_a vbmeta.img
-	fastboot flash vbmeta_b	vbmeta.img
+	fastboot flash vbmeta_${1} vbmeta.img
 }
 
 flash_magisk(){
@@ -120,8 +153,10 @@ flash_twrp(){
 
 flash_everything_including_magisk_and_kernel(){
 	 check_if_unlocked
-	 flash_all_stock_specific_images
-	 flash_all_havoc_specific_images
+	 flash_all_stock_specific_images a
+	 flash_all_stock_specific_images b
+	 flash_all_havoc_specific_images a
+	 flash_all_havoc_specific_images b
 	 reboot_to_twrp
 	 flash_magisk
 	 flash_kernel
@@ -131,8 +166,10 @@ flash_everything_including_magisk_and_kernel(){
 
 flash_everything_and_magisk(){
 	 check_if_unlocked
-	 flash_all_stock_specific_images
-	 flash_all_havoc_specific_images
+	 flash_all_stock_specific_images a
+	 flash_all_stock_specific_images b
+	 flash_all_havoc_specific_images a
+	 flash_all_havoc_specific_images b
 	 reboot_to_twrp
 	 flash_magisk
 	 echo "Everything is done phone rebooting"
@@ -141,8 +178,10 @@ flash_everything_and_magisk(){
 
 flash_all_roms(){
 	 check_if_unlocked
-	 flash_all_stock_specific_images
-	 flash_all_havoc_specific_images
+	 flash_all_stock_specific_images a
+	 flash_all_stock_specific_images b
+	 flash_all_havoc_specific_images a
+	 flash_all_havoc_specific_images b
 	 echo "Everything is done"
 }
 
@@ -164,6 +203,16 @@ menu_flash_twrp_for_android_9(){
 menu_flash_twrp_for_android_10(){
 	boot_into_twrp_using_Q_img
 	flash_twrp && adb reboot recovery && wait_for_twrp && echo "Inside twrp" && return 0
+}
+
+menu_flash_twrp_magisk_for_android_9(){
+	boot_into_twrp_using_P_img
+	flash_twrp && adb reboot recovery && wait_for_twrp && echo "Inside twrp" && flash_magisk && return 0
+}
+
+menu_flash_twrp_magisk_for_android_10(){
+	boot_into_twrp_using_Q_img
+	flash_twrp && adb reboot recovery && wait_for_twrp && echo "Inside twrp" && flash_magisk && return 0
 }
 
 #################################

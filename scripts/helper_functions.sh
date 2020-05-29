@@ -94,13 +94,6 @@ check_if_folders_and_files_are_ok(){
 	fi
 }
 
-###############################
-### end of helper functions ###
-###############################
-
-########################
-### helper functions ###
-########################
 wait_for_fastboot(){
 	up=$(fastboot devices | grep fast)
 	while [ -z "$up" ]
@@ -218,7 +211,12 @@ swap_slot(){
 	wait_for_fastboot
 }
 
+change_slot(){
+	fastboot --set-active=${1}
+	fastboot reboot bootloader
+	wait_for_fastboot
+}
+
 ###############################
 ### end of helper functions ###
 ###############################
-
