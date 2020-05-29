@@ -121,6 +121,18 @@ flash_all_havoc_specific_images(){
 	fastboot flash vbmeta_${1} vbmeta.img
 }
 
+flash_all_omni_specific_images(){
+	echo "flashing Omni images to slot $1"
+	cd "$omni_images_folder"
+	fastboot flash boot_${1} boot.img
+
+	fastboot flash dtbo_${1} dtbo.img
+	
+	fastboot flash system_${1} system.img
+
+	fastboot flash vbmeta_${1} vbmeta.img
+}
+
 flash_magisk(){
 	echo "uploading magisk"
 	cd "$scripts_folder"

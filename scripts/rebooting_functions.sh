@@ -7,13 +7,13 @@ reboot_to_recovery(){
 	fastboot reboot recovery 	# this for some reason reboots the phone and not to recovery?
 	# so we must wait for adb rofl
 	echo "waiting for adb device"
-	adb wait-for-device
+	wait_for_adb
 	echo "rebooting to recovery"
 	adb reboot recovery
 }
 
 reboot_to_twrp(){
-	check_if_in_fastboot && reboot_to_recovery && wait_for_twrp && echo "Inside twrp" && return 0 || echo "waiting for adb device" && adb wait-for-device && echo "rebooting to recovery" && adb reboot recovery && wait_for_twrp && echo "Inside twrp" && return 0
+	check_if_in_fastboot && reboot_to_recovery && wait_for_twrp && echo "Inside twrp" && return 0 || echo "waiting for adb device" && wait_for_adb && echo "rebooting to recovery" && adb reboot recovery && wait_for_twrp && echo "Inside twrp" && return 0
 }
 
 reboot_phone(){

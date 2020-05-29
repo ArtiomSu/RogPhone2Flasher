@@ -34,6 +34,16 @@ wait_for_twrp(){
 	done
 }
 
+wait_for_adb(){
+	adb get-state > /dev/null 2>&1
+	while [ $? -ne 0 ]
+	do
+		echo -e "waiting for adb"
+		sleep 5
+		adb get-state > /dev/null 2>&1
+	done
+}
+
 update_current_slot(){
 	wait_for_fastboot
 	fastboot oem device-info > /tmp/nothing_interesting.yoyo 2>&1
@@ -81,7 +91,11 @@ check_if_folders_and_files_are_ok(){
 	fi
 
 	if [ ! -d "$havoc_images_folder" ]; then
-	    confirm "custom rom images folder is not correct this might cause serious issues down the line are you sure you want to continue? [y,n]" || exit 0
+	    confirm "havoc rom images folder is not correct this might cause serious issues down the line are you sure you want to continue? [y,n]" || exit 0
+	fi
+
+	if [ ! -d "$omni_images_folder" ]; then
+	    confirm "omni rom images folder is not correct this might cause serious issues down the line are you sure you want to continue? [y,n]" || exit 0
 	fi
 
 	if [ ! -f "${scripts_folder}/$magisk_name" ]; then

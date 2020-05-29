@@ -15,6 +15,8 @@ scripts_folder="/media/2tbssd/asus-rog-phone-2/downloads/exp1/scripts"
 asus_images_folder="/media/2tbssd/asus-rog-phone-2/downloads/exp1/payload_dumper/output"
 # this is where all of your stock rom images need to be
 havoc_images_folder="/media/2tbssd/asus-rog-phone-2/downloads/exp1/havoc/payload_dumper/output"
+# this is where all of your omni rom images nees to be
+omni_images_folder="/media/2tbssd/asus-rog-phone-2/downloads/exp1/omni/payload_dumper/output"
 # this allows you to skip the [y,n] confirmations by setting it to false
 always_confirm_user_action=true
 
@@ -27,6 +29,7 @@ then
 	scripts_folder="/mnt/d/asus-rog-phone-2/downloads/exp1/scripts"
 	asus_images_folder="/mnt/d/asus-rog-phone-2/downloads/exp1/payload_dumper/output"
 	havoc_images_folder="/mnt/d/asus-rog-phone-2/downloads/exp1/havoc/payload_dumper/output"
+	omni_images_folder="/mnt/d/asus-rog-phone-2/downloads/exp1/omni/payload_dumper/output"
 	windows_adb="/mnt/d/asus-rog-phone-2/platform-tools_r29.0.5-windows/adb.exe"
 	# your fastboot file in windows
 	windows_fastboot="/mnt/d/asus-rog-phone-2/platform-tools_r29.0.5-windows/fastboot.exe"

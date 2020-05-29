@@ -3,7 +3,7 @@ flash_menu(){
 	echo "     #############################################"
 	echo "      ###########################################"
 	echo "      #                                         #"
-	echo "      #        Asus Rog Phone 2 Flasher V0.2    #"
+	echo "      #        Asus Rog Phone 2 Flasher V0.9    #"
 	echo "      #        By                               #"
 	echo "      #        Terminal_Heat_Sink               #"
 	echo "      #                                         #"
@@ -67,7 +67,7 @@ backup_menu(){
 	echo "     #############################################"
 	echo "      ###########################################"
 	echo "      #                                         #"
-	echo "      #        Asus Rog Phone 2 Flasher V0.2    #"
+	echo "      #        Asus Rog Phone 2 Flasher V0.9    #"
 	echo "      #        By                               #"
 	echo "      #        Terminal_Heat_Sink               #"
 	echo "      #                                         #"
@@ -122,7 +122,7 @@ backup_menu(){
 
 multi_rom_a10_havoc_menu(){
 	PS3="$(header) Multi rom stock/havoc: "
-	options=( "reboot to fastboot" "flash stock and havoc roms" "switch to stock rom" "switch to havoc rom" "wipe data if you have twrp installed (if you dont have a backup to restore)" "wipe data if you dont have twrp installed (if you dont have a backup to restore)" "go back")
+	options=( "reboot to fastboot" "flash stock and havoc roms" "switch to stock rom" "switch to stock rom for the first time" "switch to havoc rom" "wipe data if you have twrp installed (if you dont have a backup to restore)" "wipe data if you dont have twrp installed (if you dont have a backup to restore)" "go back")
 	select opt in "${options[@]}"
 	do
 	    case $opt in
@@ -135,8 +135,52 @@ multi_rom_a10_havoc_menu(){
 	    	"switch to stock rom")
 				stock_a10_and_havoc_reboot_to_stock
 				;;
+			"switch to stock rom for the first time")
+				stock_a10_reboot_to_stock_first_time
+				;;	
 	    	"switch to havoc rom")
 				stock_a10_and_havoc_reboot_to_havoc
+				;;
+	    	"wipe data if you have twrp installed (if you dont have a backup to restore)")
+				confirm "this will basically reboot into twrp and wipe data [y,n]" || return 0
+				twrp_wipe_data
+				;;	
+	    	"wipe data if you dont have twrp installed (if you dont have a backup to restore)")
+				confirm "this will boot into twrp using the boot.img this is handy since stock doesnt have twrp preinstalled continue? [y,n]"
+				twrp_wipe_data_by_boot_android_10
+				;;															
+	        "go back")
+	            break
+	            ;;
+	        *) 
+				echo "invalid option $REPLY"
+				;;
+	    esac
+	    echo ""
+	    PS3="$(header) Multi rom stock/havoc: "
+	done
+}
+
+multi_rom_a10_omni_menu(){
+	PS3="$(header) Multi rom stock/havoc: "
+	options=( "reboot to fastboot" "flash stock and omni rom" "switch to stock rom" "switch to stock rom for the first time" "switch to omni rom" "wipe data if you have twrp installed (if you dont have a backup to restore)" "wipe data if you dont have twrp installed (if you dont have a backup to restore)" "go back")
+	select opt in "${options[@]}"
+	do
+	    case $opt in
+	    	"reboot to fastboot")
+				reboot_fastboot
+				;;	
+			"flash stock and omni rom")
+				prepare_stock_a10_and_omni
+				;;
+	    	"switch to stock rom")
+				stock_a10_and_omni_reboot_to_stock
+				;;
+			"switch to stock rom for the first time")
+				stock_a10_reboot_to_stock_first_time
+				;;	
+	    	"switch to omni rom")
+				stock_a10_and_omni_reboot_to_omni
 				;;
 	    	"wipe data if you have twrp installed (if you dont have a backup to restore)")
 				confirm "this will basically reboot into twrp and wipe data [y,n]" || return 0
@@ -163,7 +207,7 @@ multi_rom_menu(){
 	echo "     #############################################"
 	echo "      ###########################################"
 	echo "      #                                         #"
-	echo "      #        Asus Rog Phone 2 Flasher V0.2    #"
+	echo "      #        Asus Rog Phone 2 Flasher V0.9    #"
 	echo "      #        By                               #"
 	echo "      #        Terminal_Heat_Sink               #"
 	echo "      #                                         #"
@@ -191,7 +235,7 @@ multi_rom_menu(){
 	echo ""
 	confirm "Are you sure you want to proceed? [y,n]" || return 0
 	PS3="$(header) Multi rom: "
-	options=( "reboot to fastboot" "Stock android 10 / Havoc" "Stock android 9 / Havoc" "Stock android 10 / Omni" "Stock android 9 / Omni" "Havoc / Omni" "go back")
+	options=( "reboot to fastboot" "Stock android 10 / Havoc" "Stock android 10 / Omni" "Stock android 9 / Havoc" "Stock android 9 / Omni" "Havoc / Omni" "go back")
 	select opt in "${options[@]}"
 	do
 	    case $opt in
@@ -205,7 +249,7 @@ multi_rom_menu(){
 				echo "coming soon"
 				;;
 			"Stock android 10 / Omni")
-				echo "coming soon"
+				multi_rom_a10_omni_menu
 				;;
 			"Stock android 9 / Omni")
 				echo "coming soon"
@@ -230,7 +274,7 @@ menu (){
 	echo "     #############################################"
 	echo "      ###########################################"
 	echo "      #                                         #"
-	echo "      #        Asus Rog Phone 2 Flasher V0.2    #"
+	echo "      #        Asus Rog Phone 2 Flasher V0.9    #"
 	echo "      #        By                               #"
 	echo "      #        Terminal_Heat_Sink               #"
 	echo "      #                                         #"
