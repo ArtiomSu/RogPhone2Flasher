@@ -6,17 +6,21 @@
 #config values change these before running script
 magisk_name="Magisk-v20.4.zip"
 kernel_name="Kirisakura_Yoda_Q_2.6.2.zip"
+gapps_name="open_gapps-arm64-10.0-nano-20200731.zip"
+gapps_msm="msm-gapps.zip"
 twrpQ_boot="twrp-3.3.1-14-I001D-Q-mauronofrio.img"
 twrpP_boot="twrp-3.3.1-14-I001D-Pie-mauronofrio.img"
 twrp_installer="twrp-3.3.1-14-I001D-installer-mauronofrio.zip"
 # magisk and kernel should be in the scripts folder also if you are flashing twrp put it in here
 scripts_folder="/media/2tbssd/asus-rog-phone-2/downloads/exp1/scripts"
 # this is where all of your stock rom images need to be
-asus_images_folder="/media/2tbssd/asus-rog-phone-2/downloads/exp1/payload_dumper/output"
+asus_images_folder="/media/2tbssd/asus-rog-phone-2/downloads/exp1/stock_latest/payload_dumper/output"
 # this is where all of your stock rom images need to be
 havoc_images_folder="/media/2tbssd/asus-rog-phone-2/downloads/exp1/havoc/payload_dumper/output"
 # this is where all of your omni rom images nees to be
 omni_images_folder="/media/2tbssd/asus-rog-phone-2/downloads/exp1/omni/payload_dumper/output"
+# this is where all of your msm rom images nees to be
+msm_images_folder="/media/2tbssd/asus-rog-phone-2/downloads/exp1/msm/payload_dumper/output"
 # this allows you to skip the [y,n] confirmations by setting it to false
 always_confirm_user_action=true
 
@@ -98,3 +102,26 @@ menu
 ###################
 
 
+
+# omni flash
+# flash_all_stock_specific_images a
+# flash_all_stock_specific_images b
+# flash_all_omni_specific_images a
+# flash_all_omni_specific_images b
+
+#boot_into_twrp_using_Q_img
+#flash_twrp
+#flash_gapps
+#flash_magisk
+
+
+# msm flash
+# flash_all_stock_specific_images a
+# flash_all_stock_specific_images b
+# flash_all_msm_specific_images a
+# flash_all_msm_specific_images b
+
+#boot_into_twrp_using_Q_img
+#flash_twrp
+# flash_gapps_msm
+# flash_magisk

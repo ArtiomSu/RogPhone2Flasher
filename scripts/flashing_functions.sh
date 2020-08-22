@@ -133,6 +133,18 @@ flash_all_omni_specific_images(){
 	fastboot flash vbmeta_${1} vbmeta.img
 }
 
+flash_all_msm_specific_images(){
+	echo "flashing msm images to slot $1"
+	cd "$msm_images_folder"
+	fastboot flash boot_${1} boot.img
+
+	fastboot flash dtbo_${1} dtbo.img
+	
+	fastboot flash system_${1} system.img
+
+	fastboot flash vbmeta_${1} vbmeta.img
+}
+
 flash_magisk(){
 	echo "uploading magisk"
 	cd "$scripts_folder"
@@ -141,6 +153,26 @@ flash_magisk(){
 	adb shell twrp install /tmp/${magisk_name}
 	echo "magisk flashed"
 	adb shell rm /tmp/${magisk_name}
+}
+
+flash_gapps(){
+	echo "uploading gapps"
+	cd "$scripts_folder"
+	adb push ./${gapps_name} /tmp
+	echo "flashing gapps"
+	adb shell twrp install /tmp/${gapps_name}
+	echo "gapps flashed"
+	adb shell rm /tmp/${gapps_name}
+}
+
+flash_gapps_msm(){
+	echo "uploading gapps"
+	cd "$scripts_folder"
+	adb push ./${gapps_msm} /tmp
+	echo "flashing gapps"
+	adb shell twrp install /tmp/${gapps_msm}
+	echo "gapps flashed"
+	adb shell rm /tmp/${gapps_msm}
 }
 
 flash_kernel(){
